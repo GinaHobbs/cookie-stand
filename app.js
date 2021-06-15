@@ -67,7 +67,7 @@ function tokyo() {
 }
 
 function dubai() {
-  shop.location = 'dubai';
+  shop.location = 'Dubai';
   shop.averageCookiesPurchased = 3.7;
   shop.minCustomers = 11;
   shop.maxCustomers = 38;
@@ -106,18 +106,13 @@ function lima() {
 }
 
 let shopArray = [];
-shopArray.push(Object.assign( {},seattle()));
-shopArray.push(Object.assign( {},tokyo()));
-shopArray.push(Object.assign( {},dubai()));
-shopArray.push(Object.assign( {},paris()));
-shopArray.push(Object.assign( {},lima()));
-
-// for (let i = 0; i < shopArray.length; i++) {
-//   console.log("shop name: " + shopArray[i].location)
-// }
+shopArray.push(Object.assign({}, seattle()));
+shopArray.push(Object.assign({}, tokyo()));
+shopArray.push(Object.assign({}, dubai()));
+shopArray.push(Object.assign({}, paris()));
+shopArray.push(Object.assign({}, lima()));
 
 console.log(shopArray);
-
 
 const divElem = document.getElementById('list')
 
