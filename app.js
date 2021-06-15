@@ -161,3 +161,4 @@ const divElem = document.getElementById('list')
   liElem.textContent = 'Total Cookies: ' + shop.totalCookies;
   ulElem.appendChild(liElem);
 
+
