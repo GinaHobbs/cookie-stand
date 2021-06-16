@@ -101,3 +101,8 @@ th {
 td {
   padding: 10px;
 }
+
+footer {
+  background-color: slategray;
+  padding: 25px;
+}
