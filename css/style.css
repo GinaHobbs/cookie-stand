@@ -5,9 +5,14 @@ body {
   /* border: black 5px solid; */
 }
 
-.column {
+.column-left {
   float: left;
-  width: 50%;
+  width: 30%;
+  /* border: black 5px solid; */
+}
+.column-right {
+  float: left;
+  width: 70%;
   /* border: black 5px solid; */
 }
 
