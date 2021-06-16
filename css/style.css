@@ -45,12 +45,12 @@ section {
   align-content: center;
   justify-content: center;
   padding: 25px;
-  background-color: aliceblue;
-  border:rgb(216, 230, 241) 1px solid;
+  background-color: rgb(249, 251, 253);
+  border:rgb(235, 244, 252) 1px solid;
 }
 
 .table {
-  background-color: white;
+  background-color: rgb(249, 251, 253);
 }
 
 
@@ -106,6 +106,14 @@ section:nth-child(3) button {
 
 }
 
+button {
+  padding: 25px;
+  background-color: steelblue;
+  color: aliceblue;
+  font-size: larger;
+  font-family: 'Open Sans', sans-serif;;
+}
+
 h1 {
   font-size: x-large;
   text-align: center;
@@ -142,4 +150,8 @@ footer {
   margin-top: 2.5%;
   border-top: black 1px solid;
   justify-content: space-between;
+}
+
+footer p {
+  padding: 5px;
 }
