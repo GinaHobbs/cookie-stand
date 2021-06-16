@@ -1,5 +1,7 @@
-storeHours = ['6am','7am','8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm'];
-controlCurve = [0.5, 0.75, 1.0, 0.6, 0.8, 1.0, 0.7, 0.4, 0.6, 0.9, 0.7, 0.5, 0.3, 0.4, 0.6];
+// use strict;
+
+storeHours = ['6am','7am','8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm'];
+controlCurve = [0.5, 0.75, 1.0, 0.6, 0.8, 1.0, 0.7, 0.4, 0.6, 0.9, 0.7, 0.5, 0.3, 0.4];//, 0.6];
 
 function Shop(location, averageCookies, minCustomers, maxCustomers) {
   this.location = location;
@@ -9,22 +11,23 @@ function Shop(location, averageCookies, minCustomers, maxCustomers) {
   this.maxCustomers = maxCustomers;
   this.cookiesPerHour = [];
   this.totalCookies = 0;
-  this.businessHours = 0;
 
   this.getCustomers = function(min, max) {
     let customerArray = [];
-    for (let i = 1; i < this.businessHours; i++) {
+    for (let i = 0; i < storeHours.length; i++) {
       let customerCount = Math.floor(((Math.random() * (max - min)) + min) + 1);
       customerArray.push(customerCount)
     }
     this.customers = Array.from(customerArray);
     console.log(this.customers)
-    //Apply control curve
+
+    //Apply control curve--------
     let tempArray = [];
     for (let i = 0; i < controlCurve.length; i++) {
       tempArray.push(this.customers[i] * controlCurve[i]);
     }
     this.customers = Array.from(tempArray);
+    //---------------------------
   };
   this.getCookiesPerHour = function() {
     let cookiesArray = []
@@ -40,12 +43,7 @@ function Shop(location, averageCookies, minCustomers, maxCustomers) {
     }
     this.totalCookies = cookies;
   };
-  //function takes military time only
-  this.getBusinessHours = function(open, close) {
-    this.businessHours = Math.floor((close - open)/100);
-  }
   this.init = function() {
-    this.getBusinessHours(0600,2000);
     this.getCustomers(minCustomers, maxCustomers);
     this.getCookiesPerHour();
     this.getTotalCookies();
@@ -89,14 +87,16 @@ console.log(Shop.prototype.shopArray);
 
 const divElem = document.getElementById('sales')
 
-const tableElem = document.createElement('table')
-divElem.appendChild(tableElem);
+const tableSalesElem = document.createElement('table')
+divElem.appendChild(tableSalesElem);
 
 function renderSalesHeader() {
   const rowHoursElem = document.createElement('tr');
-  tableElem.appendChild(rowHoursElem);
+  tableSalesElem.appendChild(rowHoursElem);
+  //Add a blank cell at the beginning of the row
   const rowHoursCellElem = document.createElement('th');
   rowHoursElem.appendChild(rowHoursCellElem);
+  //--------------------------------------------
   for (let i = 0; i < storeHours.length; i++) { 
     const rowHoursCellElem = document.createElement('th');
     rowHoursCellElem.textContent = storeHours[i];
@@ -107,27 +107,59 @@ function renderSalesHeader() {
 function renderSalesTable() {
   for (let i = 0; i < Shop.prototype.shopArray.length; i++) { 
     currentShop = Shop.prototype.shopArray[i]
-    const row1Elem = document.createElement('tr');
-    tableElem.appendChild(row1Elem);
+    const rowStoreElem = document.createElement('tr');
+    tableSalesElem.appendChild(rowStoreElem);
     const rowCellElem = document.createElement('th');
     rowCellElem.textContent = currentShop.location;
-    row1Elem.appendChild(rowCellElem);
+    rowStoreElem.appendChild(rowCellElem);
 
     for (let j = 0; j < currentShop.cookiesPerHour.length; j++) {
       const rowCellElem2 = document.createElement('td');
       rowCellElem2.textContent = `${currentShop.cookiesPerHour[j]}`;
-      row1Elem.appendChild(rowCellElem2);
+      rowStoreElem.appendChild(rowCellElem2);
     }
 
     const rowCellElem3 = document.createElement('td');
     rowCellElem3.textContent = 'Total Cookies: ' + currentShop.totalCookies;
-    row1Elem.appendChild(rowCellElem3);
+    rowStoreElem.appendChild(rowCellElem3);
 
   }
 }
 
+function renderSalesFooter() {
+    const rowHourlyTotalElem = document.createElement('tr');
+    tableSalesElem.appendChild(rowHourlyTotalElem);
+    const rowCellElem = document.createElement('th');
+    rowCellElem.textContent = 'Totals';
+    rowHourlyTotalElem.appendChild(rowCellElem);
+
+    totalCookiesPerDay = [];
+    for (let h = 0; h < storeHours.length; h++) {
+      let cookieHourlyTotal = 0;
+      for (let i = 0; i < Shop.prototype.shopArray.length; i++) { 
+        currentStore = Shop.prototype.shopArray[i]
+        cookieHourlyTotal += currentStore.cookiesPerHour[h]
+      }
+      const rowCellElem2 = document.createElement('td');
+      rowCellElem2.textContent = `${cookieHourlyTotal}`;
+      rowHourlyTotalElem.appendChild(rowCellElem2);
+      totalCookiesPerDay.push(cookieHourlyTotal);
+    }
+
+    let totalDaily = 0;
+    for (i = 0; i < totalCookiesPerDay.length; i++) {
+      totalDaily += totalCookiesPerDay[i];
+    }
+      const rowCellElem3 = document.createElement('td');
+      rowCellElem3.textContent = 'Daily Total: ' + totalDaily;
+      rowHourlyTotalElem.appendChild(rowCellElem3);
+
+  // }
+}
+
 renderSalesHeader();
 renderSalesTable();
+renderSalesFooter()
 
 const divElem2 = document.getElementById('employee')
 
