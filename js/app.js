@@ -1,7 +1,7 @@
 "use strict";
 
 let storeHours = ['6am','7am','8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm'];
-let controlCurve = [0.5, 0.75, 1.0, 0.6, 0.8, 1.0, 0.7, 0.4, 0.6, 0.9, 0.7, 0.5, 0.3, 0.4];//, 0.6];
+let controlCurve = [0.5, 0.75, 1.0, 0.6, 0.8, 1.0, 0.7, 0.4, 0.6, 0.9, 0.7, 0.5, 0.3, 0.4];
 
 function Shop(location, averageCookies, minCustomers, maxCustomers) {
   this.location = location;
@@ -16,10 +16,10 @@ function Shop(location, averageCookies, minCustomers, maxCustomers) {
     let customerArray = [];
     for (let i = 0; i < storeHours.length; i++) {
       let customerCount = Math.floor(((Math.random() * (max - min)) + min) + 1);
-      customerArray.push(customerCount)
+      customerArray.push(customerCount);
     }
     this.customers = Array.from(customerArray);
-    console.log(this.customers)
+    console.log(this.customers);
 
     //Apply control curve--------
     let tempArray = [];
@@ -44,7 +44,7 @@ function Shop(location, averageCookies, minCustomers, maxCustomers) {
     this.totalCookies = cookies;
   };
   this.init = function() {
-    this.getCustomers(minCustomers, maxCustomers);
+    this.getCustomers(this.minCustomers, this.maxCustomers);
     this.getCookiesPerHour();
     this.getTotalCookies();
   }
@@ -66,7 +66,7 @@ Shop.prototype.employees = []
 Shop.prototype.staffing = function () {
   let tempEmployee = [];
   for (let i = 0; i < this.customers.length; i++) {
-    let employeeCount = Math.ceil(this.customers[i]/20)
+    let employeeCount = Math.ceil(this.customers[i]/20);
     if (employeeCount >= 2) {
       tempEmployee.push(employeeCount);
     } else {
@@ -82,13 +82,60 @@ dubai.staffing();
 paris.staffing();
 lima.staffing();
 
+function handleSubmit(event) {
+  event.preventDefault();
+  let location = event.target.location.value;
+  let avgCookies = event.target.avgCookies.value;
+  let minCustomers = event.target.minCustomers.value;
+  let maxCustomers = event.target.maxCustomers.value;
+  console.log(location, avgCookies, minCustomers, maxCustomers);
 
-console.log(Shop.prototype.shopArray);
+  for (let i = 0; i < Shop.prototype.shopArray.length; i++){
+    let currentShop = Shop.prototype.shopArray[i];
+    if (location === currentShop.location) {
+      currentShop.averageCookies = event.target.avgCookies.value;
+      currentShop.minCustomers = event.target.minCustomers.value;
+      currentShop.maxCustomers = event.target.maxCustomers.value;
+      currentShop.init();
+      currentShop.staffing();
+      break;
+    }else if (Shop.prototype.shopArray.length === (i+1)){
+      const newStore = new Shop(location, avgCookies, minCustomers, maxCustomers);
+      newStore.staffing();
+      break;
+    }
+  }
 
-const divElem = document.getElementById('sales')
 
-const tableSalesElem = document.createElement('table')
+  console.log(Shop.prototype.shopArray);
+  event.target.reset();
+
+  clearSalesTable();
+  renderSalesHeader();
+  renderSalesTable();
+  renderSalesFooter();
+
+  clearEmployeeTable();
+  renderEmployeeHeader();
+  renderEmployeeTable();
+}
+const storeFormElem = document.getElementById('newStoreForm');
+storeFormElem.addEventListener('submit', handleSubmit);
+
+
+// console.log(Shop.prototype.shopArray);
+
+
+const divElem = document.getElementById('sales');
+
+let tableSalesElem = document.createElement('table');
 divElem.appendChild(tableSalesElem);
+
+function clearSalesTable() {
+  divElem.removeChild(tableSalesElem);
+  tableSalesElem = document.createElement('table');
+  divElem.appendChild(tableSalesElem);
+}
 
 function renderSalesHeader() {
   const rowHoursElem = document.createElement('tr');
@@ -106,7 +153,7 @@ function renderSalesHeader() {
 
 function renderSalesTable() {
   for (let i = 0; i < Shop.prototype.shopArray.length; i++) { 
-    let currentShop = Shop.prototype.shopArray[i]
+    let currentShop = Shop.prototype.shopArray[i];
     const rowStoreElem = document.createElement('tr');
     tableSalesElem.appendChild(rowStoreElem);
     const rowCellElem = document.createElement('th');
@@ -122,8 +169,9 @@ function renderSalesTable() {
     const rowCellElem3 = document.createElement('td');
     rowCellElem3.textContent = 'Total Cookies: ' + currentShop.totalCookies;
     rowStoreElem.appendChild(rowCellElem3);
-    
+
   }
+
 }
 
 function renderSalesFooter() {
@@ -137,8 +185,8 @@ function renderSalesFooter() {
     for (let h = 0; h < storeHours.length; h++) {
       let cookieHourlyTotal = 0;
       for (let i = 0; i < Shop.prototype.shopArray.length; i++) { 
-        let currentStore = Shop.prototype.shopArray[i]
-        cookieHourlyTotal += currentStore.cookiesPerHour[h]
+        let currentStore = Shop.prototype.shopArray[i];
+        cookieHourlyTotal += currentStore.cookiesPerHour[h];
       }
       const rowCellElem2 = document.createElement('td');
       rowCellElem2.textContent = `${cookieHourlyTotal}`;
@@ -158,12 +206,18 @@ function renderSalesFooter() {
 
 renderSalesHeader();
 renderSalesTable();
-renderSalesFooter()
+renderSalesFooter();
 
-const divElem2 = document.getElementById('employee')
+const divElem2 = document.getElementById('employee');
 
-const tableEmployeesElem = document.createElement('table')
+let tableEmployeesElem = document.createElement('table');
 divElem2.appendChild(tableEmployeesElem);
+
+function clearEmployeeTable() {
+  divElem2.removeChild(tableEmployeesElem);
+  tableEmployeesElem = document.createElement('table');
+  divElem2.appendChild(tableEmployeesElem);
+}
 
 function renderEmployeeHeader() {
   const rowHoursElem = document.createElement('tr');
@@ -179,7 +233,7 @@ function renderEmployeeHeader() {
 
 function renderEmployeeTable() {
   for (let i = 0; i < Shop.prototype.shopArray.length; i++) { 
-    let currentShop = Shop.prototype.shopArray[i]
+    let currentShop = Shop.prototype.shopArray[i];
     const rowEmployeeElem = document.createElement('tr');
     tableEmployeesElem.appendChild(rowEmployeeElem);
     const rowEmployeeCellElem = document.createElement('th');
