@@ -118,6 +118,13 @@ button {
   font-family: 'Open Sans', sans-serif;
   border-radius: 3px;
   border: 0px;
+  transition: background-color ease-out 100ms;
+}
+
+button:hover {
+  /* background-color: rgb(44, 44, 102); */
+  background-color: rgb(255, 102, 0);
+  transition: background-color ease-out 100ms;
 }
 
 h1 {
