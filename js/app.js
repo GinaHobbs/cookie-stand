@@ -44,7 +44,7 @@ function Shop(location, averageCookies, minCustomers, maxCustomers) {
     this.totalCookies = cookies;
   };
   this.init = function() {
-    this.getCustomers(minCustomers, maxCustomers);
+    this.getCustomers(this.minCustomers, this.maxCustomers);
     this.getCookiesPerHour();
     this.getTotalCookies();
   }
@@ -82,13 +82,60 @@ dubai.staffing();
 paris.staffing();
 lima.staffing();
 
+function handleSubmit(event) {
+  event.preventDefault();
+  let location = event.target.location.value;
+  let avgCookies = event.target.avgCookies.value;
+  let minCustomers = event.target.minCustomers.value;
+  let maxCustomers = event.target.maxCustomers.value;
+  console.log(location, avgCookies, minCustomers, maxCustomers);
 
-console.log(Shop.prototype.shopArray);
+  for (let i = 0; i < Shop.prototype.shopArray.length; i++){
+    let currentShop = Shop.prototype.shopArray[i];
+    if (location === currentShop.location) {
+      currentShop.averageCookies = event.target.avgCookies.value;
+      currentShop.minCustomers = event.target.minCustomers.value;
+      currentShop.maxCustomers = event.target.maxCustomers.value;
+      currentShop.init();
+      currentShop.staffing();
+      break;
+    }else if (Shop.prototype.shopArray.length === (i+1)){
+      const newStore = new Shop(location, avgCookies, minCustomers, maxCustomers);
+      newStore.staffing();
+      break;
+    }
+  }
+
+
+  console.log(Shop.prototype.shopArray);
+  event.target.reset();
+
+  clearSalesTable();
+  renderSalesHeader();
+  renderSalesTable();
+  renderSalesFooter();
+
+  clearEmployeeTable();
+  renderEmployeeHeader();
+  renderEmployeeTable();
+}
+const storeFormElem = document.getElementById('newStoreForm');
+storeFormElem.addEventListener('submit', handleSubmit);
+
+
+// console.log(Shop.prototype.shopArray);
+
 
 const divElem = document.getElementById('sales');
 
-const tableSalesElem = document.createElement('table');
+let tableSalesElem = document.createElement('table');
 divElem.appendChild(tableSalesElem);
+
+function clearSalesTable() {
+  divElem.removeChild(tableSalesElem);
+  tableSalesElem = document.createElement('table');
+  divElem.appendChild(tableSalesElem);
+}
 
 function renderSalesHeader() {
   const rowHoursElem = document.createElement('tr');
@@ -122,8 +169,9 @@ function renderSalesTable() {
     const rowCellElem3 = document.createElement('td');
     rowCellElem3.textContent = 'Total Cookies: ' + currentShop.totalCookies;
     rowStoreElem.appendChild(rowCellElem3);
-    
+
   }
+
 }
 
 function renderSalesFooter() {
@@ -162,8 +210,14 @@ renderSalesFooter();
 
 const divElem2 = document.getElementById('employee');
 
-const tableEmployeesElem = document.createElement('table');
+let tableEmployeesElem = document.createElement('table');
 divElem2.appendChild(tableEmployeesElem);
+
+function clearEmployeeTable() {
+  divElem2.removeChild(tableEmployeesElem);
+  tableEmployeesElem = document.createElement('table');
+  divElem2.appendChild(tableEmployeesElem);
+}
 
 function renderEmployeeHeader() {
   const rowHoursElem = document.createElement('tr');
