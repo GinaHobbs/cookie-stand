@@ -1,7 +1,7 @@
-// use strict;
+"use strict";
 
-storeHours = ['6am','7am','8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm'];
-controlCurve = [0.5, 0.75, 1.0, 0.6, 0.8, 1.0, 0.7, 0.4, 0.6, 0.9, 0.7, 0.5, 0.3, 0.4];//, 0.6];
+let storeHours = ['6am','7am','8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm'];
+let controlCurve = [0.5, 0.75, 1.0, 0.6, 0.8, 1.0, 0.7, 0.4, 0.6, 0.9, 0.7, 0.5, 0.3, 0.4];//, 0.6];
 
 function Shop(location, averageCookies, minCustomers, maxCustomers) {
   this.location = location;
@@ -106,7 +106,7 @@ function renderSalesHeader() {
 
 function renderSalesTable() {
   for (let i = 0; i < Shop.prototype.shopArray.length; i++) { 
-    currentShop = Shop.prototype.shopArray[i]
+    let currentShop = Shop.prototype.shopArray[i]
     const rowStoreElem = document.createElement('tr');
     tableSalesElem.appendChild(rowStoreElem);
     const rowCellElem = document.createElement('th');
@@ -122,7 +122,7 @@ function renderSalesTable() {
     const rowCellElem3 = document.createElement('td');
     rowCellElem3.textContent = 'Total Cookies: ' + currentShop.totalCookies;
     rowStoreElem.appendChild(rowCellElem3);
-
+    
   }
 }
 
@@ -133,11 +133,11 @@ function renderSalesFooter() {
     rowCellElem.textContent = 'Totals';
     rowHourlyTotalElem.appendChild(rowCellElem);
 
-    totalCookiesPerDay = [];
+    let totalCookiesPerDay = [];
     for (let h = 0; h < storeHours.length; h++) {
       let cookieHourlyTotal = 0;
       for (let i = 0; i < Shop.prototype.shopArray.length; i++) { 
-        currentStore = Shop.prototype.shopArray[i]
+        let currentStore = Shop.prototype.shopArray[i]
         cookieHourlyTotal += currentStore.cookiesPerHour[h]
       }
       const rowCellElem2 = document.createElement('td');
@@ -147,14 +147,13 @@ function renderSalesFooter() {
     }
 
     let totalDaily = 0;
-    for (i = 0; i < totalCookiesPerDay.length; i++) {
+    for (let i = 0; i < totalCookiesPerDay.length; i++) {
       totalDaily += totalCookiesPerDay[i];
     }
       const rowCellElem3 = document.createElement('td');
       rowCellElem3.textContent = 'Daily Total: ' + totalDaily;
       rowHourlyTotalElem.appendChild(rowCellElem3);
 
-  // }
 }
 
 renderSalesHeader();
@@ -180,7 +179,7 @@ function renderEmployeeHeader() {
 
 function renderEmployeeTable() {
   for (let i = 0; i < Shop.prototype.shopArray.length; i++) { 
-    currentShop = Shop.prototype.shopArray[i]
+    let currentShop = Shop.prototype.shopArray[i]
     const rowEmployeeElem = document.createElement('tr');
     tableEmployeesElem.appendChild(rowEmployeeElem);
     const rowEmployeeCellElem = document.createElement('th');
