@@ -100,8 +100,10 @@ section:nth-child(3) h1 {
 
 }
 
-section:nth-child(3) p {
-  
+section:nth-child(3) article p {
+  overflow: auto;
+  line-height: 1.4em;
+  height: 200px;
 }
 
 section:nth-child(3) button {
@@ -113,7 +115,9 @@ button {
   background-color: steelblue;
   color: aliceblue;
   font-size: larger;
-  font-family: 'Open Sans', sans-serif;;
+  font-family: 'Open Sans', sans-serif;
+  border-radius: 3px;
+  border: 0px;
 }
 
 h1 {
